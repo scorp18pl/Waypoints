@@ -1,6 +1,7 @@
 package org.scorp.waypoints.Waypoint;
 
 import org.bukkit.Location;
+import org.bukkit.util.Vector;
 import org.bukkit.ChatColor;
 import org.jetbrains.annotations.NotNull;
 
@@ -35,6 +36,11 @@ public class Waypoint implements
     return isPublic;
   }
 
+  public Vector getXyz()
+  {
+    return new Vector(x, y, z);
+  }
+
   @Override
   public String toString()
   {
@@ -63,7 +69,7 @@ public class Waypoint implements
       return compareOwner;
     }
 
-    int compareWorld = this.worldName.compareTo(o.ownerName);
+    int compareWorld = this.worldName.compareTo(o.worldName);
     if (compareWorld != 0)
     {
       return compareWorld;

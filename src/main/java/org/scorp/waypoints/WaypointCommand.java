@@ -6,7 +6,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
+import org.scorp.waypoints.Waypoint.WaypointBadWorldException;
 import org.scorp.waypoints.Waypoint.WaypointNameExistsException;
 import org.scorp.waypoints.Waypoint.WaypointNotFoundException;
 import org.scorp.waypoints.command.*;
@@ -24,7 +24,7 @@ public class WaypointCommand implements CommandExecutor, TabExecutor
       List.of(new AddSubCommand(), new CoordsSubCommand(), new ListSubCommand(),
           new RemoveSubCommand(), new RenameSubCommand(),
           new SetTypeSubCommand(),
-          new ShareSubCommand());
+          new ShareSubCommand(), new PointSubCommand());
 
   private static SubCommand getSubCommandWithName(String name)
   {
@@ -85,7 +85,7 @@ public class WaypointCommand implements CommandExecutor, TabExecutor
       sender.sendMessage(Utils.getErrorString(e.getMessage()));
       sender.sendMessage(
           Utils.getInfoString(getUsageString(subCommand.getUsageMessage())));
-    } catch (WaypointNotFoundException | WaypointNameExistsException e)
+    } catch (WaypointNotFoundException | WaypointNameExistsException | WaypointBadWorldException e)
     {
       sender.sendMessage(Utils.getErrorString(e.getMessage()));
     }

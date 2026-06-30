@@ -1,6 +1,5 @@
 package org.scorp.waypoints.Waypoint;
 
-import com.bethecoder.ascii_table.ASCIITable;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import org.bukkit.Bukkit;
@@ -161,7 +160,7 @@ public class WaypointManager
     }
 
     requiresDiscordUpdate = false;
-    Utils.sendTCPMessage(host, port, getDiscordMessage());
+    Utils.sendTCPMessage(host, port, getDiscordCsv());
   }
 
   private static void readWaypoints()
@@ -199,45 +198,17 @@ public class WaypointManager
     requiresDiscordUpdate = requiresDiscordUpdate || condition;
   }
 
-  private static String getDiscordMessage()
+  private static String getDiscordCsv()
   {
-    ArrayList<Waypoint> publicWaypoints = getPublicWaypoints();
-    if (publicWaypoints.size() == 0)
-    {
-      return "No publicly shared waypoints available.";
-    }
+    StringBuilder csv = new StringBuilder("owner,name,world,x,y,z\n");
+    getPublicWaypoints().stream().sorted().forEach(
+        (waypoint) -> csv.append(waypoint.ownerName).append(',')
+            .append(waypoint.waypointName).append(',')
+            .append(waypoint.worldName).append(',')
+            .append(waypoint.x).append(',')
+            .append(waypoint.y).append(',')
+            .append(waypoint.z).append('\n'));
 
-    String tableName =
-        "Publicly shared waypoints" + "(updated: " + Utils.getDateString() +
-            ")\n";
-    String[] tableHeaders = {"Owner", "Name", "world", "(x, y, z)"};
-    String[][] tableData = publicWaypoints.stream().sorted().map(
-            (waypoint) -> new String[]{waypoint.ownerName, waypoint.waypointName,
-                waypoint.worldName,
-                "(" + waypoint.x + ", " + waypoint.y + ", " + waypoint.z + ")"})
-        .collect(Collectors.toCollection(ArrayList::new))
-        .toArray(new String[0][0]);
-
-    String lastOwner, lastWorld;
-    lastWorld = lastOwner = "";
-    for (String[] entry : tableData)
-    {
-      String owner = entry[0];
-      String world = entry[2];
-      if (owner.equals(lastOwner))
-      {
-        entry[0] = "";
-      }
-      if (world.equals(lastWorld))
-      {
-        entry[2] = "";
-      }
-
-      lastOwner = owner;
-      lastWorld = world;
-    }
-
-    return tableName +
-        ASCIITable.getInstance().getTable(tableHeaders, tableData);
+    return csv.toString();
   }
 }

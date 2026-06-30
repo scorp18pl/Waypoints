@@ -1,7 +1,7 @@
 name: Waypoints
 version: '${project.version}'
 main: org.scorp.waypoints.Waypoints
-api-version: '1.20'
+api-version: '26.2'
 author: scorp
 commands:
     waypoint:

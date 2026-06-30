@@ -2,6 +2,7 @@ package org.scorp.waypoints.command.subcommands;
 
 import org.bukkit.command.CommandSender;
 import org.scorp.waypoints.InternalErrorException;
+import org.scorp.waypoints.Waypoint.WaypointBadWorldException;
 import org.scorp.waypoints.Waypoint.WaypointNameExistsException;
 import org.scorp.waypoints.Waypoint.WaypointNotFoundException;
 import org.scorp.waypoints.command.InvalidCommandException;
@@ -19,7 +20,7 @@ public interface SubCommand
 
   void onCommand(CommandSender sender, String[] args) throws
       InvalidCommandException, WaypointNameExistsException,
-      WaypointNotFoundException;
+      WaypointNotFoundException, WaypointBadWorldException;
 
   List<String> onTabComplete(CommandSender sender, int argIndex) throws
       InternalErrorException, PlayerOnlyCommandException;
